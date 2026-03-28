@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MASA — Akdeniz Üniversitesi</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0A0A0A;
+    --white: #FAFAF5;
+    --yellow: #FFE135;
+    --red: #FF3B3B;
+    --blue: #1A3FFF;
+    --green: #00C853;
+    --orange: #FF6B00;
+    --pink: #FF2D78;
+    --border: 2.5px solid #0A0A0A;
+    --border-thick: 3.5px solid #0A0A0A;
+    --shadow: 4px 4px 0px #0A0A0A;
+    --shadow-lg: 6px 6px 0px #0A0A0A;
+    --shadow-xl: 8px 8px 0px #0A0A0A;
+    --radius: 4px;
+  }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app-shell {
+    max-width: 430px;
+    margin: 0 auto;
+    background: var(--white);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    border-left: var(--border);
+    border-right: var(--border);
+  }
+
+  .screen { display: none; flex-direction: column; min-height: 100vh; }
+  .screen.active { display: flex; }
+
+  /* ─────────────────── LANDING ─────────────────── */
+  .landing-screen {
+    background: var(--yellow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .landing-bg-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+  .landing-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 40px 24px 0;
+  }
+
+  .badge-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--black);
+    color: var(--yellow);
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+    width: fit-content;
+    margin-bottom: 28px;
+  }
+
+  .badge-dot {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: blink 1.4s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .landing-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 88px;
+    line-height: 0.9;
+    color: var(--black);
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+
+  .landing-tagline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .landing-tagline span {
+    display: inline-block;
+    background: var(--black);
+    color: var(--yellow);
+    padding: 1px 6px;
+  }
+
+  .landing-sub {
+    font-size: 14px;
+    color: var(--black);
+    line-height: 1.6;
+    font-weight: 400;
+    margin-top: 14px;
+    max-width: 290px;
+    opacity: 0.75;
+  }
+
+  .landing-cards-wrap {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .landing-cards-wrap::-webkit-scrollbar { display: none; }
+
+  .landing-mini {
+    flex-shrink: 0;
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 12px 14px;
+    width: 148px;
+    transform: rotate(-1deg);
+  }
+  .landing-mini:nth-child(2) { transform: rotate(1.5deg); }
+  .landing-mini:nth-child(3) { transform: rotate(-0.5deg); }
+
+  .mini-emoji { font-size: 18px; margin-bottom: 6px; display: block; }
+  .mini-title { font-size: 12px; font-weight: 700; color: var(--black); line-height: 1.3; }
+  .mini-time { font-size: 11px; color: #555; margin-top: 3px; }
+
+  .landing-spacer { flex: 1; }
+
+  .landing-bottom {
+    background: var(--black);
+    margin: 24px -0px 0;
+    padding: 28px 24px 40px;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--yellow);
+    color: var(--black);
+    border: var(--border-thick);
+    border-radius: var(--radius);
+    padding: 16px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.03em;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+  }
+  .btn-primary:active { transform: translate(4px, 4px); box-shadow: none; }
+
+  .btn-secondary {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.7); }
+
+  .trust-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─────────────────── HEADER BAR ─────────────────── */
+  .header-bar {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px 14px;
+    gap: 12px;
+    border-bottom: var(--border);
+    background: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .back-btn {
+    width: 36px; height: 36px;
+    background: var(--black);
+    color: var(--yellow);
+    border: var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .back-btn:active { transform: translate(4px,4px); box-shadow: none; }
+
+  .header-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .header-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: -1px;
+    flex: 1;
+  }
+
+  /* ─────────────────── SCREENS ─────────────────── */
+  .screen-body { padding: 22px 20px; flex: 1; overflow-y: auto; }
+
+  .screen-heading {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 28px;
+    color: var(--black);
+    margin-bottom: 6px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .screen-sub {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  /* ─────────────────── FORMS ─────────────────── */
+  .form-group { margin-bottom: 20px; }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 13px 14px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    box-shadow: var(--shadow);
+    outline: none;
+    transition: box-shadow 0.1s, transform 0.1s;
+  }
+  .form-input:focus { box-shadow: none; transform: translate(4px,4px); }
+
+  textarea.form-input {
+    min-height: 90px;
+    resize: none;
+  }
+
+  /* ─────────────────── CHIPS ─────────────────── */
+  .dept-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dept-chip {
+    background: var(--white);
+    border: var(--border);
+    border-radius: 2px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--black);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .dept-chip:active, .dept-chip.selected {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+    background: var(--yellow);
+  }
+
+  .purpose-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .purpose-chip {
+    background: var(--white);
+    border: var(--border);
+    border-radius: 2px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--black);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .purpose-chip.selected {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+    background: var(--yellow);
+  }
+
+  .limit-selector { display: flex; gap: 8px; }
+  .limit-btn {
+    flex: 1;
+    background: var(--white);
+    border: var(--border);
+    border-radius: 2px;
+    padding: 11px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--black);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .limit-btn.selected {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+    background: var(--yellow);
+  }
+
+  /* ─────────────────── HOME SCREEN ─────────────────── */
+  .home-hero {
+    background: var(--black);
+    padding: 20px 20px 18px;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,225,53,0.15) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+  }
+  .home-greeting {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .home-campus {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    line-height: 1.1;
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+    letter-spacing: -0.5px;
+  }
+  .home-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: var(--white);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .stat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    padding: 14px 20px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: var(--border);
+    background: var(--white);
+    position: sticky;
+    top: 57px;
+    z-index: 9;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    flex-shrink: 0;
+    background: var(--white);
+    border: var(--border);
+    border-radius: 2px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--black);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .filter-chip.active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+    background: var(--yellow);
+  }
+
+  .tables-feed { padding: 16px 16px 100px; }
+
+  /* ─────────────────── TABLE CARD ─────────────────── */
+  .table-card {
+    background: var(--white);
+    border: var(--border-thick);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .table-card:active { transform: translate(6px, 6px); box-shadow: none; }
+
+  .card-accent {
+    height: 5px;
+  }
+
+  .card-body { padding: 16px 16px 14px; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 17px;
+    line-height: 1.2;
+    color: var(--black);
+    flex: 1;
+    letter-spacing: -0.3px;
+  }
+
+  .card-type {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #F0F0E8;
+    border: 1.5px solid var(--black);
+    border-radius: 2px;
+    padding: 4px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1.5px solid #E0E0D0;
+  }
+
+  .avatars-row { display: flex; align-items: center; gap: -4px; }
+  .mini-av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: -6px;
+    color: var(--black);
+  }
+  .mini-av:first-child { margin-left: 0; }
+
+  .spots-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .spots-badge.full { background: #ccc; color: #888; }
+  .spots-badge .spots-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; }
+
+  /* ─────────────────── SECTION HEADER ─────────────────── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 12px;
+    padding-top: 4px;
+  }
+
+  /* ─────────────────── FAB ─────────────────── */
+  .fab {
+    position: fixed;
+    bottom: 84px;
+    right: calc(50% - 215px + 16px);
+    width: 56px; height: 56px;
+    background: var(--yellow);
+    border: var(--border-thick);
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.1s, box-shadow 0.1s;
+    font-weight: 700;
+  }
+  .fab:active { transform: translate(6px, 6px); box-shadow: none; }
+
+  /* ─────────────────── BOTTOM NAV ─────────────────── */
+  .bottom-nav {
+    position: sticky;
+    bottom: 0;
+    background: var(--black);
+    border-top: var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0;
+    z-index: 30;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 14px 8px;
+    cursor: pointer;
+    border-right: 1.5px solid rgba(255,255,255,0.1);
+    transition: background 0.1s;
+  }
+  .nav-item:last-child { border-right: none; }
+  .nav-item:hover { background: rgba(255,255,255,0.05); }
+  .nav-item.active { background: var(--yellow); }
+  .nav-item.active .nav-icon, .nav-item.active .nav-label { color: var(--black); }
+
+  .nav-icon { font-size: 18px; color: rgba(255,255,255,0.6); }
+  .nav-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─────────────────── STICKY FOOTER ─────────────────── */
+  .sticky-footer {
+    padding: 16px 20px 32px;
+    border-top: var(--border);
+    background: var(--white);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .create-body { padding: 20px 20px 0; flex: 1; overflow-y: auto; }
+
+  .time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ─────────────────── DETAIL SCREEN ─────────────────── */
+  .detail-hero {
+    padding: 22px 20px 18px;
+    border-bottom: var(--border);
+  }
+
+  .detail-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--black);
+    color: var(--yellow);
+    border-radius: 2px;
+    padding: 5px 11px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .detail-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 28px;
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .detail-desc {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.65;
+  }
+
+  .detail-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 18px 20px;
+    border-bottom: var(--border);
+  }
+
+  .meta-block {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .meta-block-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .meta-block-val {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
+    color: var(--black);
+  }
+
+  .participants-section {
+    padding: 18px 20px;
+    border-bottom: var(--border);
+  }
+
+  .participant-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+  }
+
+  .participant-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .participant-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  .participant-dept {
+    font-size: 12px;
+    color: #777;
+    margin-top: 1px;
+  }
+
+  .empty-spot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px dashed #CCC;
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .empty-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px dashed #CCC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #CCC;
+  }
+  .empty-text { font-size: 13px; color: #BBB; font-weight: 600; }
+
+  .detail-footer {
+    padding: 16px 20px 32px;
+    border-top: var(--border);
+    background: var(--white);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .btn-join {
+    display: block;
+    width: 100%;
+    background: var(--yellow);
+    color: var(--black);
+    border: var(--border-thick);
+    border-radius: var(--radius);
+    padding: 17px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .btn-join:active { transform: translate(6px, 6px); box-shadow: none; }
+
+  .join-note {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* ─────────────────── MY TABLES ─────────────────── */
+  .my-section-header { padding: 0 16px; margin-bottom: 6px; }
+  .my-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #999;
+    padding: 16px 0 10px;
+  }
+
+  .my-table-row {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 14px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .my-table-row:active { transform: translate(4px, 4px); box-shadow: none; }
+
+  .row-color-bar {
+    width: 5px;
+    height: 40px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .row-info { flex: 1; }
+  .row-title { font-weight: 700; font-size: 14px; color: var(--black); }
+  .row-meta { font-size: 12px; color: #888; margin-top: 3px; font-weight: 400; }
+
+  .row-badge {
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 2px;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1.5px solid var(--black);
+  }
+  .badge-joined { background: var(--yellow); color: var(--black); }
+  .badge-upcoming { background: var(--white); color: var(--black); }
+
+  /* ─────────────────── SUCCESS SCREEN ─────────────────── */
+  .success-screen {
+    background: var(--yellow);
+    position: relative;
+    overflow: hidden;
+  }
+  .success-bg {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+  }
+  .success-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 28px;
+    text-align: center;
+  }
+
+  .success-icon {
+    width: 88px; height: 88px;
+    background: var(--black);
+    border: var(--border-thick);
+    border-radius: 50%;
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .success-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 36px;
+    color: var(--black);
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+
+  .success-sub {
+    font-size: 15px;
+    color: rgba(0,0,0,0.65);
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 280px;
+  }
+
+  .success-card {
+    background: var(--white);
+    border: var(--border-thick);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xl);
+    padding: 18px 18px;
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .success-card-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--black);
+    letter-spacing: -0.3px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #E0E0D0;
+  }
+
+  .success-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 7px 0;
+    border-bottom: 1px solid #F0F0E0;
+  }
+  .success-detail-row:last-child { border-bottom: none; }
+  .success-detail-row span:first-child { color: #999; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .success-detail-row span:last-child { font-weight: 600; color: var(--black); }
+
+  /* ─────────────────── EMPTY STATE ─────────────────── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state-text { font-size: 14px; color: #999; line-height: 1.6; }
+
+  /* ─────────────────── PROFILE PHOTO ─────────────────── */
+  .photo-upload-box {
+    width: 88px; height: 88px;
+    background: #F0F0E8;
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    gap: 4px;
+    margin-bottom: 8px;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .photo-upload-box:active { transform: translate(4px,4px); box-shadow: none; }
+  .photo-upload-box span { font-size: 24px; }
+  .photo-upload-box small { font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ─────────────────── HOST INFO ─────────────────── */
+  .host-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--black);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    color: var(--white);
+  }
+  .host-av {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+  .host-name { font-weight: 700; font-size: 14px; color: var(--white); }
+  .host-dept { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .host-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ═══════════════ LANDING ═══════════════ -->
+  <div id="screen-landing" class="screen landing-screen active">
+    <div class="landing-bg-dots"></div>
+    <div class="landing-inner">
+      <div class="badge-strip">
+        <span class="badge-dot"></span>
+        Akdeniz Üniversitesi · Yüksek Lisans
+      </div>
+
+      <div class="landing-logo">MASA</div>
+      <div class="landing-tagline">
+        Kampüste <span>küçük buluşmalar.</span>
+      </div>
+      <div class="landing-tagline" style="margin-top:4px;">
+        <span>İlk adım</span> kolay.
+      </div>
+
+      <p class="landing-sub">
+        Kahve molası, seminer sohbeti, çalışma arası — zaten burada olan insanlarla, düşük baskılı anlarda bir araya gel.
+      </p>
+
+      <div class="landing-cards-wrap">
+        <div class="landing-mini">
+          <span class="mini-emoji">☕</span>
+          <div class="mini-title">Tez burnout kahvesi</div>
+          <div class="mini-time">Bugün 14:30 · 1 yer açık</div>
+        </div>
+        <div class="landing-mini">
+          <span class="mini-emoji">✨</span>
+          <div class="mini-title">Newcomer tanışma masası</div>
+          <div class="mini-time">Bugün 17:00 · 3 yer açık</div>
+        </div>
+        <div class="landing-mini">
+          <span class="mini-emoji">📚</span>
+          <div class="mini-title">1 saat sessiz çalışma</div>
+          <div class="mini-time">Yarın 10:00 · 2 yer açık</div>
+        </div>
+      </div>
+
+      <div class="landing-spacer"></div>
+    </div>
+
+    <div class="landing-bottom">
+      <button class="btn-primary" onclick="goTo('screen-register')">Masalara katıl →</button>
+      <button class="btn-secondary" onclick="goTo('screen-login')">Hesabım var, giriş yap</button>
+      <div class="trust-note">🔒 Sadece Akdeniz Üniversitesi öğrencileri</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ REGISTER ═══════════════ -->
+  <div id="screen-register" class="screen">
+    <div class="header-bar">
+      <button class="back-btn" onclick="goTo('screen-landing')">←</button>
+      <span class="header-title">Kayıt ol</span>
+    </div>
+    <div class="screen-body">
+      <div class="screen-heading">Masaya otur.</div>
+      <p class="screen-sub">Üniversite mailinle kayıt ol. Kısa ve hızlı.</p>
+
+      <div class="form-group">
+        <label class="form-label">Adın</label>
+        <input type="text" class="form-input" placeholder="Adın Soyadın">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Üniversite e-postası</label>
+        <input type="email" class="form-input" placeholder="adsoyad@ogr.akdeniz.edu.tr">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+    </div>
+    <div class="sticky-footer">
+      <button class="btn-primary" onclick="goTo('screen-profile')">Devam et →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LOGIN ═══════════════ -->
+  <div id="screen-login" class="screen">
+    <div class="header-bar">
+      <button class="back-btn" onclick="goTo('screen-landing')">←</button>
+      <span class="header-title">Giriş yap</span>
+    </div>
+    <div class="screen-body">
+      <div class="screen-heading">Tekrar hoş geldin.</div>
+      <p class="screen-sub">Masalar seni bekliyor.</p>
+      <div class="form-group">
+        <label class="form-label">E-posta</label>
+        <input type="email" class="form-input" placeholder="adsoyad@ogr.akdeniz.edu.tr">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+    </div>
+    <div class="sticky-footer">
+      <button class="btn-primary" onclick="goTo('screen-home')">Giriş yap →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PROFILE SETUP ═══════════════ -->
+  <div id="screen-profile" class="screen">
+    <div class="header-bar">
+      <button class="back-btn" onclick="goTo('screen-register')">←</button>
+      <span class="header-title">Profilini oluştur</span>
+    </div>
+    <div class="screen-body" style="padding-bottom:20px;">
+      <div class="screen-heading">Senin hakkında.</div>
+      <p class="screen-sub">Masadakiler seni biraz tanısın. Detaylı değil, sadece temel.</p>
+
+      <div class="form-group" style="display:flex;align-items:center;gap:16px;">
+        <div class="photo-upload-box">
+          <span>📷</span>
+          <small>Fotoğraf</small>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;color:#777;line-height:1.5;">İsteğe bağlı.<br>Profil fotoğrafı güven hissi yaratır.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bölüm / Program</label>
+        <div class="dept-chips">
+          <div class="dept-chip" onclick="toggleChip(this)">Psikoloji</div>
+          <div class="dept-chip" onclick="toggleChip(this)">İşletme</div>
+          <div class="dept-chip" onclick="toggleChip(this)">Mühendislik</div>
+          <div class="dept-chip" onclick="toggleChip(this)">Mimarlık</div>
+          <div class="dept-chip" onclick="toggleChip(this)">Hukuk</div>
+          <div class="dept-chip" onclick="toggleChip(this)">Diğer</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Kısa bir not (isteğe bağlı)</label>
+        <textarea class="form-input" placeholder="Nereden geldiğin, neden burada olduğun, ilgi alanların…"></textarea>
+      </div>
+    </div>
+    <div class="sticky-footer">
+      <button class="btn-primary" onclick="goTo('screen-home')">Masalara git →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ HOME ═══════════════ -->
+  <div id="screen-home" class="screen" style="flex-direction:column;">
+    <div class="header-bar">
+      <span class="header-logo">MASA</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div style="width:32px;height:32px;background:var(--yellow);border:var(--border);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:11px;cursor:pointer;" onclick="goTo('screen-my')">ZK</div>
+      </div>
+    </div>
+
+    <div class="home-hero">
+      <div class="home-hero-bg"></div>
+      <div class="home-greeting">Merhaba Zeynep 👋</div>
+      <div class="home-campus">Akdeniz Üniversitesi'nde<br>bugün neler var?</div>
+      <div class="home-stats">
+        <div class="stat-pill"><span class="stat-dot"></span> 6 açık masa</div>
+        <div class="stat-pill">📍 Kampüs içi</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-chip active" onclick="setFilter(this,'all')">Tümü</div>
+      <div class="filter-chip" onclick="setFilter(this,'coffee')">☕ Kahve</div>
+      <div class="filter-chip" onclick="setFilter(this,'study')">📚 Çalışma</div>
+      <div class="filter-chip" onclick="setFilter(this,'chat')">💬 Sohbet</div>
+      <div class="filter-chip" onclick="setFilter(this,'new')">✨ Tanışma</div>
+    </div>
+
+    <div class="tables-feed" style="flex:1;overflow-y:auto;">
+      <!-- Card 1 -->
+      <div class="table-card" onclick="goTo('screen-detail')">
+        <div class="card-accent" style="background:var(--red);"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Tez burnout kahvesi</div>
+            <div class="card-type">☕</div>
+          </div>
+          <div class="card-desc">Tez yazmaktan kafayı yiyorum, birlikte mola verelim dedim. Şikayet et, nefes al.</div>
+          <div class="card-meta">
+            <span class="meta-tag">⏰ Bugün 14:30</span>
+            <span class="meta-tag">📍 Kütüphane kafesi</span>
+          </div>
+          <div class="card-footer">
+            <div class="avatars-row">
+              <div class="mini-av" style="background:#FFE135;">ZK</div>
+              <div class="mini-av" style="background:#FFB347;">BT</div>
+              <div class="mini-av" style="background:#87CEEB;font-size:9px;">+2</div>
+            </div>
+            <div class="spots-badge"><span class="spots-dot"></span>1 yer açık</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="table-card" onclick="goTo('screen-detail')">
+        <div class="card-accent" style="background:var(--blue);"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Newcomer tanışma masası</div>
+            <div class="card-type">✨</div>
+          </div>
+          <div class="card-desc">Bu dönem yeni gelenler için. Kampüsü anlatmak, sormak ya da sadece yüz yüze gelmek için.</div>
+          <div class="card-meta">
+            <span class="meta-tag">⏰ Bugün 17:00</span>
+            <span class="meta-tag">📍 Merkez bina giriş</span>
+          </div>
+          <div class="card-footer">
+            <div class="avatars-row">
+              <div class="mini-av" style="background:#B0E0E6;">MC</div>
+            </div>
+            <div class="spots-badge"><span class="spots-dot"></span>3 yer açık</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="table-card" onclick="goTo('screen-detail')">
+        <div class="card-accent" style="background:var(--green);"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Sessiz çalışma + mola</div>
+            <div class="card-type">📚</div>
+          </div>
+          <div class="card-desc">1 saat sessiz çalışma, 20 dakika mola. Çalışacak biri arıyorum yan masaya.</div>
+          <div class="card-meta">
+            <span class="meta-tag">⏰ Yarın 10:00</span>
+            <span class="meta-tag">📍 Çalışma salonu B</span>
+          </div>
+          <div class="card-footer">
+            <div class="avatars-row">
+              <div class="mini-av" style="background:#DDA0DD;">AY</div>
+              <div class="mini-av" style="background:#98FB98;">KS</div>
+            </div>
+            <div class="spots-badge"><span class="spots-dot"></span>2 yer açık</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 — DOLU -->
+      <div class="table-card" style="opacity:0.6;" onclick="goTo('screen-detail')">
+        <div class="card-accent" style="background:#ccc;"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Seminer sonrası kahve</div>
+            <div class="card-type">💬</div>
+          </div>
+          <div class="card-desc">Sosyoloji semineri sonrası kısa bir sohbet.</div>
+          <div class="card-meta">
+            <span class="meta-tag">⏰ Bugün 16:00</span>
+            <span class="meta-tag">📍 B blok önü</span>
+          </div>
+          <div class="card-footer">
+            <div class="avatars-row">
+              <div class="mini-av" style="background:#FFE135;">KD</div>
+              <div class="mini-av" style="background:#FFB347;">EM</div>
+              <div class="mini-av" style="background:#87CEEB;">RT</div>
+            </div>
+            <div class="spots-badge full">Dolu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="setNav(this); goTo('screen-home')">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Masalar</span>
+      </div>
+      <div class="nav-item" onclick="setNav(this); goTo('screen-create')">
+        <span class="nav-icon">＋</span>
+        <span class="nav-label">Oluştur</span>
+      </div>
+      <div class="nav-item" onclick="setNav(this); goTo('screen-my')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Masalarım</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DETAIL ═══════════════ -->
+  <div id="screen-detail" class="screen" style="flex-direction:column;">
+    <div class="header-bar">
+      <button class="back-btn" onclick="goTo('screen-home')">←</button>
+      <span class="header-title">Masa detayı</span>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding-bottom:0;">
+      <div style="height:5px;background:var(--red);"></div>
+
+      <div class="detail-hero">
+        <div class="detail-type-badge">☕ Kahve molası</div>
+        <div class="detail-title">Tez burnout kahvesi</div>
+        <div class="detail-desc">Tez yazmaktan kafayı yiyorum, birlikte mola verelim dedim. Şikayet et, nefes al, içi boşalt. Yargılamıyorum.</div>
+      </div>
+
+      <div class="detail-meta-grid">
+        <div class="meta-block">
+          <div class="meta-block-label">Zaman</div>
+          <div class="meta-block-val">Bugün 14:30</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-block-label">Yer</div>
+          <div class="meta-block-val">Kütüphane kafesi</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-block-label">Kapasite</div>
+          <div class="meta-block-val">4 kişi</div>
+        </div>
+        <div class="meta-block" style="background:var(--yellow);">
+          <div class="meta-block-label">Kalan yer</div>
+          <div class="meta-block-val">1 açık 🟢</div>
+        </div>
+      </div>
+
+      <div class="participants-section">
+        <div class="section-label">Katılımcılar</div>
+        <div class="participant-chip">
+          <div class="participant-avatar" style="background:var(--yellow);">ZK</div>
+          <div>
+            <div class="participant-name">Zeynep Kara</div>
+            <div class="participant-dept">Psikoloji · Masa sahibi</div>
+          </div>
+        </div>
+        <div class="participant-chip">
+          <div class="participant-avatar" style="background:#FFB347;">BT</div>
+          <div>
+            <div class="participant-name">Berk T.</div>
+            <div class="participant-dept">İşletme</div>
+          </div>
+        </div>
+        <div class="participant-chip">
+          <div class="participant-avatar" style="background:#87CEEB;">AS</div>
+          <div>
+            <div class="participant-name">Ayşe S.</div>
+            <div class="participant-dept">Mimarlık</div>
+          </div>
+        </div>
+        <div class="empty-spot">
+          <div class="empty-avatar">+</div>
+          <span class="empty-text">Yer açık — bu sen olabilirsin</span>
+        </div>
+      </div>
+
+      <div class="participants-section" style="border-bottom:none;">
+        <div class="section-label">Organizatör</div>
+        <div class="host-chip">
+          <div class="host-av">ZK</div>
+          <div>
+            <div class="host-name">Zeynep Kara</div>
+            <div class="host-dept">Psikoloji · 2. yıl</div>
+            <div class="host-note">"Tez yazmaktan bunaldım, mola verelim dedim."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-footer">
+      <button class="btn-join" onclick="goTo('screen-joined')">Bu masaya katıl →</button>
+      <p class="join-note">Mesaj göndermeye gerek yok. Sadece gel.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CREATE ═══════════════ -->
+  <div id="screen-create" class="screen" style="flex-direction:column;">
+    <div class="header-bar">
+      <button class="back-btn" onclick="goTo('screen-home')">←</button>
+      <span class="header-title">Masa oluştur</span>
+    </div>
+    <div class="create-body">
+      <div class="screen-heading">Yeni bir masa aç.</div>
+      <p class="screen-sub">Kısa ve net tut — başkalarının hızlıca karar vermesini kolaylaştır.</p>
+
+      <div class="form-group">
+        <label class="form-label">Masa türü</label>
+        <div class="purpose-chips">
+          <div class="purpose-chip selected" onclick="togglePurpose(this)">☕ Kahve</div>
+          <div class="purpose-chip" onclick="togglePurpose(this)">📚 Çalışma</div>
+          <div class="purpose-chip" onclick="togglePurpose(this)">💬 Sohbet</div>
+          <div class="purpose-chip" onclick="togglePurpose(this)">✨ Tanışma</div>
+          <div class="purpose-chip" onclick="togglePurpose(this)">🌿 Yürüyüş</div>
+          <div class="purpose-chip" onclick="togglePurpose(this)">🍽 Öğle yemeği</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Başlık</label>
+        <input type="text" class="form-input" placeholder="örn. Seminer sonrası kahve">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Kısa açıklama</label>
+        <textarea class="form-input" placeholder="Bu masa neden? Kim katılabilir?"></textarea>
+      </div>
+
+      <div class="form-group">
+        <div class="time-row">
+          <div>
+            <label class="form-label">Tarih</label>
+            <input type="date" class="form-input" value="2025-03-28">
+          </div>
+          <div>
+            <label class="form-label">Saat</label>
+            <input type="time" class="form-input" value="14:30">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Yer</label>
+        <input type="text" class="form-input" placeholder="örn. Kütüphane kafesi, zemin kat">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Katılımcı limiti</label>
+        <div class="limit-selector">
+          <button class="limit-btn" onclick="selectLimit(this)">2</button>
+          <button class="limit-btn" onclick="selectLimit(this)">3</button>
+          <button class="limit-btn selected" onclick="selectLimit(this)">4</button>
+          <button class="limit-btn" onclick="selectLimit(this)">5</button>
+          <button class="limit-btn" onclick="selectLimit(this)">6</button>
+        </div>
+        <p style="font-size:12px;color:#999;margin-top:8px;font-style:italic;">Küçük masalar daha samimi hissettiriyor. 4–5 ideal.</p>
+      </div>
+    </div>
+
+    <div class="sticky-footer">
+      <button class="btn-primary" onclick="goTo('screen-created')">Masayı yayınla →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ MY TABLES ═══════════════ -->
+  <div id="screen-my" class="screen" style="flex-direction:column;">
+    <div class="header-bar">
+      <span class="header-logo">MASA</span>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding-bottom:80px;">
+      <div class="my-section-header">
+        <div class="my-section-title">Yaklaşan masalar</div>
+
+        <div class="my-table-row" onclick="goTo('screen-detail')">
+          <div class="row-color-bar" style="background:var(--red);"></div>
+          <div class="row-info">
+            <div class="row-title">Tez burnout kahvesi</div>
+            <div class="row-meta">Bugün 14:30 · Kütüphane kafesi</div>
+          </div>
+          <span class="row-badge badge-joined">Katıldım</span>
+        </div>
+
+        <div class="my-table-row" onclick="goTo('screen-detail')">
+          <div class="row-color-bar" style="background:var(--blue);"></div>
+          <div class="row-info">
+            <div class="row-title">Newcomer tanışma masası</div>
+            <div class="row-meta">Bugün 17:00 · Merkez bina</div>
+          </div>
+          <span class="row-badge badge-upcoming">Yakında</span>
+        </div>
+      </div>
+
+      <div class="my-section-header" style="margin-top:4px;">
+        <div class="my-section-title">Oluşturduklarım</div>
+        <div class="empty-state">
+          <span class="empty-state-icon">⊞</span>
+          <p class="empty-state-text">Henüz bir masa oluşturmadın.<br>İlk adımı sen at.</p>
+          <button class="dept-chip selected" style="margin-top:16px;width:auto;padding:12px 24px;" onclick="goTo('screen-create')">Masa aç →</button>
+        </div>
+      </div>
+
+      <div class="my-section-header" style="margin-top:4px;">
+        <div class="my-section-title">Geçmiş masalar</div>
+        <div class="my-table-row" style="opacity:0.45;">
+          <div class="row-color-bar" style="background:var(--green);"></div>
+          <div class="row-info">
+            <div class="row-title">Sessiz çalışma + mola</div>
+            <div class="row-meta">25 Mart · Çalışma salonu B</div>
+          </div>
+          <span class="row-badge" style="background:#F0F0E8;color:#999;border-color:#CCC;">Tamamlandı</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="setNav(this); goTo('screen-home')">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Masalar</span>
+      </div>
+      <div class="nav-item" onclick="setNav(this); goTo('screen-create')">
+        <span class="nav-icon">＋</span>
+        <span class="nav-label">Oluştur</span>
+      </div>
+      <div class="nav-item active" onclick="setNav(this); goTo('screen-my')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Masalarım</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ JOINED SUCCESS ═══════════════ -->
+  <div id="screen-joined" class="screen success-screen">
+    <div class="success-bg"></div>
+    <div class="success-inner">
+      <div class="success-icon" style="color:var(--yellow);font-size:40px;">✓</div>
+      <div class="success-title">Masaya katıldın!</div>
+      <p class="success-sub">Herhangi bir mesaj göndermeye gerek yok. Belirtilen yerde, belirtilen saatte ol. Yeter.</p>
+
+      <div class="success-card">
+        <div class="success-card-title">Tez burnout kahvesi ☕</div>
+        <div class="success-detail-row">
+          <span>Zaman</span><span>Bugün, 14:30</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Yer</span><span>Kütüphane kafesi, zemin kat</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Katılanlar</span><span>Zeynep K., Berk T., sen</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="background:var(--black);color:var(--yellow);" onclick="goTo('screen-home')">Ana sayfaya dön →</button>
+      <button class="btn-secondary" style="border-color:rgba(0,0,0,0.2);color:var(--black);margin-top:10px;" onclick="goTo('screen-my')">Masalarımı gör</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CREATED SUCCESS ═══════════════ -->
+  <div id="screen-created" class="screen success-screen">
+    <div class="success-bg"></div>
+    <div class="success-inner">
+      <div class="success-icon" style="font-size:36px;">🚀</div>
+      <div class="success-title">Masa yayında!</div>
+      <p class="success-sub">Diğer öğrenciler artık masanı görüp katılabilir. İlk adımı sen attın.</p>
+
+      <div class="success-card">
+        <div class="success-card-title">Öğleden sonra kahvesi ☕</div>
+        <div class="success-detail-row">
+          <span>Zaman</span><span>Bugün, 14:30</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Yer</span><span>Kütüphane kafesi</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Kapasite</span><span>4 kişi</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Durum</span><span>🟢 Açık</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="background:var(--black);color:var(--yellow);" onclick="goTo('screen-home')">Masaları keşfet →</button>
+      <button class="btn-secondary" style="border-color:rgba(0,0,0,0.2);color:var(--black);margin-top:10px;" onclick="goTo('screen-my')">Masalarımı gör</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const t = document.getElementById(id);
+    if (t) { t.classList.add('active'); t.scrollTop = 0; }
+  }
+
+  function toggleChip(el) {
+    document.querySelectorAll('#screen-profile .dept-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function togglePurpose(el) {
+    document.querySelectorAll('.purpose-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function selectLimit(el) {
+    document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function setFilter(el, type) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function setNav(el) {
+    const nav = el.closest('.bottom-nav');
+    if (nav) nav.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
